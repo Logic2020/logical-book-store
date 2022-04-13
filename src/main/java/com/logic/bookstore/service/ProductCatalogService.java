@@ -33,7 +33,6 @@ public class ProductCatalogService {
 
         inventoryRepository.increaseAmount("1000", 10);
         inventoryRepository.increaseAmount("2000", 10);
-        inventoryRepository.increaseAmount("3000", 10);
     }
 
     public List<Book> getAllBooks() {

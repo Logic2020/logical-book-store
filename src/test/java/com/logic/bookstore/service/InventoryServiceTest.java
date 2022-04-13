@@ -111,47 +111,6 @@ class InventoryServiceTest {
     }
 
     @Test
-    void removingNoMoreThanExistingInventoryDoesNotThrowException() {
-        // given
-        String firstBookId = "1000";
-        String secondBookId = "2000";
-        when(repository.findById(firstBookId)).thenReturn(Optional.of(new InventoryItem(firstBookId, 10)));
-        when(repository.findById(secondBookId)).thenReturn(Optional.of(new InventoryItem(secondBookId, 20)));
-        Map<String, Integer> requestedQuantities = Map.of(firstBookId, 10, secondBookId, 18);
-        // when
-        inventoryService.ensureEnoughInventory(requestedQuantities);
-        // then
-        verify(repository, times(1)).findById(firstBookId);
-        verify(repository, times(1)).findById(secondBookId);
-    }
-
-    @Test
-    void attemptToRemoveMoreThanExistingInventoryThrowsException() {
-        // given
-        when(repository.findById(BOOK_ID))
-                .thenReturn(Optional.of(new InventoryItem(BOOK_ID, 10)));
-        Map<String, Integer> requestedQuantities = Map.of(BOOK_ID, 11);
-        // when
-        // then
-        ServiceException exception = assertThrowsExactly(ServiceException.class,
-                                                         () -> inventoryService.ensureEnoughInventory(requestedQuantities));
-        assertThat(exception.getMessage(), is("Not enough books in inventory. Book ID: " + BOOK_ID));
-        assertThat(exception.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-    }
-
-    @Test
-    void attemptToGetNonExistentInventoryThrowsException() {
-        // given
-        when(repository.findById(BOOK_ID))
-                .thenReturn(Optional.empty());
-        // when
-        ServiceException exception = assertThrowsExactly(ServiceException.class,
-                                                         () -> inventoryService.getInventoryFor(BOOK_ID));
-        assertThat(exception.getMessage(), is("Inventory not found for book. Book ID: " + BOOK_ID));
-        assertThat(exception.getStatusCode(), is(HttpStatus.NOT_FOUND));
-    }
-
-    @Test
     void attemptToCreateInventoryForNonExistingBookThrowsException() {
         // given
         when(productCatalog.exists(BOOK_ID)).thenReturn(false);

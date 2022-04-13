@@ -1,25 +1,21 @@
 package com.logic.bookstore.service;
 
 import com.logic.bookstore.domain.InventoryItem;
-import com.logic.bookstore.exception.ExceptionFactory;
 import com.logic.bookstore.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
-    private final ProductCatalogService productCatalog;
 
     @Autowired
     public InventoryService(InventoryRepository inventoryRepository,
                             ProductCatalogService productCatalog) {
         this.inventoryRepository = inventoryRepository;
-        this.productCatalog = productCatalog;
     }
 
     public List<InventoryItem> getAllInventory() {
@@ -27,41 +23,16 @@ public class InventoryService {
     }
 
     public InventoryItem createOrUpdate(String bookId, int amount) {
-        if (!productCatalog.exists(bookId)) {
-            throw ExceptionFactory.bookNotFound(bookId);
-        }
-
-        inventoryRepository
-                .findById(bookId)
-                .ifPresentOrElse(item -> inventoryRepository.increaseAmount(bookId, amount),
-                                 () -> inventoryRepository.create(new InventoryItem(bookId, amount)));
-
+        inventoryRepository.increaseAmount(bookId, amount);
+        inventoryRepository.create(new InventoryItem(bookId, amount));
         return getInventoryFor(bookId);
     }
 
     public InventoryItem getInventoryFor(String bookId) {
-        return inventoryRepository
-                .findById(bookId)
-                .orElseThrow(() -> ExceptionFactory.inventoryNotFound(bookId));
+        return inventoryRepository.findById(bookId).get();
     }
 
     public void decreaseAmount(String bookId, int amount) {
-        inventoryRepository.findById(bookId)
-                .ifPresent(inventory -> inventoryRepository.decreaseAmount(bookId, amount));
-    }
-
-    public void ensureEnoughInventory(Map<String, Integer> requestedQuantities) {
-        for (Map.Entry<String, Integer> entry : requestedQuantities.entrySet()) {
-            String bookId = entry.getKey();
-            int quantity = entry.getValue();
-            if (!isEnough(bookId, quantity)) {
-                throw ExceptionFactory.notEnoughBooks(bookId);
-            }
-        }
-    }
-
-    private boolean isEnough(String bookId, int amount) {
-        InventoryItem item = getInventoryFor(bookId);
-        return item.getAmount() >= amount;
+        inventoryRepository.decreaseAmount(bookId, amount);
     }
 }

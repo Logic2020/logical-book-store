@@ -29,8 +29,6 @@ public class OrderService {
     }
 
     public Order placeOrder(Map<String, Integer> requestedQuantities) {
-        inventory.ensureEnoughInventory(requestedQuantities);
-
         List<OrderItem> orderItems = findAllItems(requestedQuantities);
         removeBoughtItemsFromInventory(orderItems);
 
@@ -38,8 +36,8 @@ public class OrderService {
     }
 
     public Order findOrder(String id) {
-        return orderRepository.findById(id)
-                .orElseThrow(() -> ExceptionFactory.orderNotFound(id));
+            return orderRepository.findById(id)
+            .orElseThrow(() -> ExceptionFactory.orderNotFound(id));
     }
 
     public Map<String, Order.Status> allOrderStatuses() {
@@ -59,9 +57,13 @@ public class OrderService {
     }
 
     private Order createAndSaveOrder(List<OrderItem> orderItems) {
-        Order order = new Order(generateOrderId(), orderItems);
-        orderRepository.save(order);
-        return order;
+        try {
+            Order order = new Order(generateOrderId(), orderItems);
+            orderRepository.save(order);
+            return order;
+        } catch (Exception e) {
+            throw new RuntimeException("Unknown error");
+        }
     }
 
     private String generateOrderId() {
