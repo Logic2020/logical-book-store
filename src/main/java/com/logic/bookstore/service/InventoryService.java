@@ -50,17 +50,17 @@ public class InventoryService {
                 .ifPresent(inventory -> inventoryRepository.decreaseAmount(bookId, amount));
     }
 
-    public void ensureEnoughInventory(Map<String, Integer> bookIdsToQuantities) {
-        for (Map.Entry<String, Integer> entry : bookIdsToQuantities.entrySet()) {
+    public void ensureEnoughInventory(Map<String, Integer> requestedQuantities) {
+        for (Map.Entry<String, Integer> entry : requestedQuantities.entrySet()) {
             String bookId = entry.getKey();
             int quantity = entry.getValue();
-            if (!hasEnough(bookId, quantity)) {
+            if (!isEnough(bookId, quantity)) {
                 throw ExceptionFactory.notEnoughBooks(bookId);
             }
         }
     }
 
-    private boolean hasEnough(String bookId, int amount) {
+    private boolean isEnough(String bookId, int amount) {
         InventoryItem item = getInventoryFor(bookId);
         return item.getAmount() >= amount;
     }

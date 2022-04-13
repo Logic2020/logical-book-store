@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logic.bookstore.TestDataBuilder;
 import com.logic.bookstore.domain.Order;
 import com.logic.bookstore.exception.CustomExceptionHandler;
+import com.logic.bookstore.exception.ExceptionFactory;
 import com.logic.bookstore.rest.request.CreateOrderRequest;
 import com.logic.bookstore.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -104,5 +106,19 @@ class OrderControllerTest {
         });
         assertThat(returnedOrders.get(orderId1), is(Order.Status.IN_PROGRESS));
         assertThat(returnedOrders.get(orderId2), is(Order.Status.SUCCESS));
+    }
+
+    @Test
+    void attemptingToGetNonExistentOrderByIdThrowsException() throws Exception {
+        when(orderService.findOrder("123")).thenThrow(ExceptionFactory.orderNotFound("123"));
+        // when
+        MvcResult result = mockMvc.perform(
+                get("/orders/123")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        // then
+        assertTrue(result.getResponse().getContentAsString().contains("Order not found"));
     }
 }

@@ -28,10 +28,10 @@ public class OrderService {
         this.inventory = inventory;
     }
 
-    public Order placeOrder(Map<String, Integer> bookIdsToQuantities) {
-        inventory.ensureEnoughInventory(bookIdsToQuantities);
+    public Order placeOrder(Map<String, Integer> requestedQuantities) {
+        inventory.ensureEnoughInventory(requestedQuantities);
 
-        List<OrderItem> orderItems = findAllItems(bookIdsToQuantities);
+        List<OrderItem> orderItems = findAllItems(requestedQuantities);
         removeBoughtItemsFromInventory(orderItems);
 
         return createAndSaveOrder(orderItems);
@@ -48,8 +48,8 @@ public class OrderService {
                 .collect(Collectors.toMap(Order::getOrderId, Order::getStatus));
     }
 
-    private List<OrderItem> findAllItems(Map<String, Integer> bookIdsToQuantities) {
-        return bookIdsToQuantities.entrySet().stream()
+    private List<OrderItem> findAllItems(Map<String, Integer> requestedQuantities) {
+        return requestedQuantities.entrySet().stream()
                 .map(entry -> new OrderItem(catalog.getBook(entry.getKey()), entry.getValue()))
                 .collect(Collectors.toList());
     }

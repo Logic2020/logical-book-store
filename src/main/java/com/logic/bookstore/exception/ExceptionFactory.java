@@ -9,7 +9,7 @@ public class ExceptionFactory {
     public static final String INVENTORY_NOT_FOUND = "Inventory not found for book. Book ID: %s";
     public static final String BOOK_ALREADY_EXISTS = "Book already exists. Book ID: %s";
     public static final String INVENTORY_ITEM_ALREADY_EXISTS = "Inventory item already exists. Book ID: %s";
-    public static final String NOT_ENOUGH_INVENTORY = "Not enough books in inventory. Book ID = %s";
+    public static final String NOT_ENOUGH_INVENTORY = "Not enough books in inventory. Book ID: %s";
 
     private ExceptionFactory() {
         // disabling instantiation
