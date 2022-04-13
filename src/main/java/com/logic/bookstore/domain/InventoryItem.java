@@ -1,8 +1,10 @@
 package com.logic.bookstore.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class InventoryItem {
 
     private String bookId;

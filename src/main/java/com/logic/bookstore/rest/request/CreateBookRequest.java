@@ -37,4 +37,13 @@ public class CreateBookRequest {
     public Book asBook() {
         return new Book(id, title, authors, year, price);
     }
+
+    public static CreateBookRequest from(Book book) {
+        return new CreateBookRequest(
+                book.getId(),
+                book.getTitle(),
+                book.getAuthors(),
+                book.getYear(),
+                book.getPrice());
+    }
 }

@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderRequest {
+public class CreateOrderRequest {
 
     private final List<Item> items;
 
     @JsonCreator
-    public OrderRequest(@JsonProperty(value = "items", required = true) List<Item> items) {
+    public CreateOrderRequest(@JsonProperty(value = "items", required = true) List<Item> items) {
         this.items = items;
     }
 

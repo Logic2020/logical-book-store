@@ -30,12 +30,13 @@ public class ProductCatalogService {
         add(new Book("2000", "C Programming Language", List.of("Kernighan Brian W", "Ritchie Dennis"), 1978, new BigDecimal("38.89")));
         add(new Book("3000", "Design Patterns: Elements of Reusable Object-Oriented Software", List.of("Gamma Erich", "Helm Richard", "Johnson Ralph", "Vlissides John"), 1994, new BigDecimal("32.39")));
 
+
         inventoryRepository.increaseAmount("1000", 10);
         inventoryRepository.increaseAmount("2000", 10);
         inventoryRepository.increaseAmount("3000", 10);
     }
 
-    public List<Book> allBooks() {
+    public List<Book> getAllBooks() {
         return productRepository.findAll();
     }
 

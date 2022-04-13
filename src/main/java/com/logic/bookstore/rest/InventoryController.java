@@ -3,6 +3,8 @@ package com.logic.bookstore.rest;
 import com.logic.bookstore.domain.InventoryItem;
 import com.logic.bookstore.rest.request.AddInventoryRequest;
 import com.logic.bookstore.service.InventoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import java.util.List;
 @RequestMapping(path = "/inventory", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class InventoryController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InventoryController.class);
+
     private final InventoryService inventoryService;
 
     @Autowired
@@ -25,18 +29,24 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping("")
+    @GetMapping()
     public List<InventoryItem> listInventory() {
-        return inventoryService.getAllInventory();
+        List<InventoryItem> inventory = inventoryService.getAllInventory();
+        LOG.info("Returning all existing inventory: {}", inventory);
+        return inventory;
     }
 
-    @PostMapping("")
+    @PostMapping()
     public InventoryItem addMoreItems(@RequestBody AddInventoryRequest request) {
-        return inventoryService.createOrUpdate(request.getBookId(), request.getAmount());
+        InventoryItem item = inventoryService.createOrUpdate(request.getBookId(), request.getAmount());
+        LOG.info("Adding {} more books with id: {}", request.getAmount(), request.getBookId());
+        return item;
     }
 
     @GetMapping("/{id}")
     public InventoryItem getInventoryItem(@PathVariable String id) {
-        return inventoryService.getInventoryFor(id);
+        InventoryItem item = inventoryService.getInventoryFor(id);
+        LOG.info("Retrieved inventory item by id {} from inventory: {}", id, item);
+        return item;
     }
 }
