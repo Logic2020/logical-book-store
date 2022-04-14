@@ -28,9 +28,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = ProductCatalogController.class)
+@WebMvcTest(controllers = ProductController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class ProductCatalogControllerTest {
+class ProductControllerTest {
 
     @Autowired
     MockMvc mockMvc;
