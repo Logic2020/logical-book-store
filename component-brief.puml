@@ -1,0 +1,34 @@
+@startuml
+
+'!theme bluegray
+!theme cyborg
+'!theme plain
+'!theme sketchy
+
+rectangle "Product Catalog Management" {
+
+  component (ProductCatalogController)
+  component (ProductCatalogService)
+  component (ProductRepository)
+  ProductCatalogController <--> ProductCatalogService
+  ProductCatalogService <--> ProductRepository
+}
+
+rectangle "Inventory Management" {
+  component (InventoryController)
+  component (InventoryService)
+  component (InventoryRepository)
+  InventoryController <--> InventoryService
+  InventoryService <--> InventoryRepository
+}
+
+rectangle "Order Management" {
+  component (OrderController)
+  component (OrderService)
+  component (OrderRepository)
+  OrderController <--> OrderService
+  OrderService <--> OrderRepository
+}
+
+
+@enduml

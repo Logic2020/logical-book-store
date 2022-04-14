@@ -21,14 +21,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/catalog", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public class ProductCatalogController {
+public class ProductController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProductCatalogController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductCatalogService productCatalog;
 
     @Autowired
-    public ProductCatalogController(ProductCatalogService productCatalog) {
+    public ProductController(ProductCatalogService productCatalog) {
         this.productCatalog = productCatalog;
     }
 

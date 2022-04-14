@@ -1,0 +1,51 @@
+@startuml
+
+@startuml
+
+left to right direction
+top to bottom direction
+
+!theme cyborg
+
+'top to bottom direction
+left to right direction
+
+package domain {
+
+  class Book {
+    - String **id**
+    - String **title**
+    - List<String> **authors**
+    - int **year**
+    - BigDecimal **price**
+  }
+
+  class Order {
+    - String **orderId**
+    - Status **status**
+    - List<OrderItem> **items**
+    - long **timestamp**
+  }
+
+  enum Status {
+    IN_PROGRESS
+    SUCCESS
+    FAIL
+  }
+
+  class OrderItem {
+    - Book **book**
+    - int **quantity**
+  }
+
+  class InventoryItem {
+    - String **bookId**
+    - int **amount**
+  }
+
+  Order *-right- Status
+  Order *-- OrderItem
+  OrderItem *-- Book
+}
+
+@enduml

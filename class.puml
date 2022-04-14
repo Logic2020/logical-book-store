@@ -1,0 +1,103 @@
+@startuml
+
+@startuml
+
+'left to right direction
+top to bottom direction
+skinparam linetype ortho
+
+!theme cyborg
+
+package rest {
+  class ProductController {
+    - ProductCatalogService **productCatalog**
+    + List<Book> **getBooks**()
+    + Book **addBook**(CreateBookRequest request)
+    + Book **getBookById**(String id)
+    + void **removeBook**(String id)
+  }
+
+  class InventoryController {
+    - InventoryService **inventoryService**
+    + List<InventoryItem> **listInventory**()
+    + InventoryItem **addMoreItems**(AddInventoryRequest request)
+    + InventoryItem **getInventoryItem**(String id)
+  }
+
+  class OrderController {
+    - OrderService **orderService**
+    + Order **placeOrder**(CreateOrderRequest request)
+    + Order **getOrderDetails**(String orderId)
+    + Map<String, Order.Status> **allOrderStatuses**()
+  }
+}
+
+
+package service {
+  class ProductCatalogService {
+    - ProductRepository **productRepository**
+    - InventoryRepository **inventoryRepository**
+    + List<Book> **getAllBooks**();
+    + Book **getBook**(String id);
+    + Book **add**(Book book);
+    + void **removeBook**(String id);
+    + boolean **exists**(String id);
+  }
+
+  ProductController --> ProductCatalogService
+
+  class InventoryService {
+    - InventoryRepository **inventoryRepository**
+    + List<InventoryItem> **getAllInventory**()
+    + InventoryItem **createOrUpdate**(String bookId, int amount);
+    + InventoryItem **getInventoryFor**(String bookId);
+    + void **decreaseAmount**(String bookId, int amount);
+  }
+
+  InventoryController --> InventoryService
+
+  class OrderService {
+    - OrderRepository **orderRepository**
+    - ProductCatalogService **catalog**
+    - InventoryService **inventory**
+    + Order **placeOrder**(Map<String, Integer> requestedQuantities)
+    + Order **findOrder**(String id);
+    + Map<String, Order.Status> **allOrderStatuses**();
+  }
+
+  OrderController --> OrderService
+}
+
+package repository {
+
+  interface ProductRepository {
+      Book **save**(Book book)
+      List<Book> **findAll**()
+      Optional<Book> **findById**(String id)
+      void **delete**(String id)
+  }
+
+  interface InventoryRepository {
+    List<InventoryItem> **findAll**()
+    Optional<InventoryItem> **findById**(String bookId)
+    InventoryItem **create**(InventoryItem item)
+    InventoryItem **increaseAmount**(String bookId, int amountToAdd)
+    InventoryItem **decreaseAmount**(String bookId, int amount)
+    void **delete**(String bookId)
+  }
+
+  interface OrderRepository {
+      Order **save**(Order order)
+      Optional<Order> **findById**(String id)
+      List<Order> **findAll**()
+  }
+
+  ProductCatalogService --> ProductRepository
+  ProductCatalogService --> InventoryRepository
+  InventoryService --> InventoryRepository
+  OrderService --> InventoryRepository
+  OrderService --> ProductRepository
+  OrderService --> OrderRepository
+}
+
+@enduml
