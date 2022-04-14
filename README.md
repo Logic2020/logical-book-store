@@ -22,16 +22,16 @@ To start the application, run the `main` method in the `BookStoreApplication` cl
 
 ## Domain Model
 
-Application aims to help in selling `Books`. Each `Book` has an id that is globally unique and comes from an external system (for example, bar code). 
+Application aims to help in selling `Books`. Each `Book` type has an id that is globally unique and comes from an external third-party system. 
 
-Class `InventoryItem` tracks how many books the system has for each `bookId`.
+Class `InventoryItem` tracks the number of book copies the system has for each book (by `bookId`).
 
-The system allows to place an `Order` for an existing `Book`, if we have enough of that book in inventory.
+The system allows to place an `Order` for an existing `Book`, if we have enough of that book in the inventory.
 
 ![img.png](domain.png)
 
-There is a controller, a service and in a trivial in-memory database implementation for each core domain object:
-managing product catalog, managing inventory, and placing orders.
+There is a controller, a service and in a trivial in-memory database implementation for each core domain object (`Book`, `InventoryItem` and `Order`).
+Those allow you to manage product catalog, replenish inventory, and place orders.
 
 ![img.png](class.png)
 
