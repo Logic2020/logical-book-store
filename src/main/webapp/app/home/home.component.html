@@ -1,0 +1,28 @@
+<div class="row">
+  <ng-container>
+    <div class="col-md-12">
+      <table class="table table-striped table-hover" id="books">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Title</th>
+          <th>Authors</th>
+          <th>Year</th>
+          <th>Price</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let book of books">
+        <tr>
+          <td>{{ book.id }}</td>
+          <td>{{ book.title }}</td>
+          <td>
+            <div *ngFor="let author of book.authors">{{ author }}</div>
+          </td>
+          <td>{{ book.year }}</td>
+          <td>{{ book.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

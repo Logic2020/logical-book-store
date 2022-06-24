@@ -2,10 +2,12 @@ package com.logic.bookstore.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 
 @Data
 @Builder
@@ -13,6 +15,7 @@ import java.util.List;
 public class Book {
 
     // external id (barcode)
+
     private String id;
 
     private String title;

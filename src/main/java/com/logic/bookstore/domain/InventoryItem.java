@@ -3,6 +3,7 @@ package com.logic.bookstore.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 public class InventoryItem {
@@ -14,4 +15,5 @@ public class InventoryItem {
         this.bookId = bookId;
         this.amount = amount;
     }
+
 }
